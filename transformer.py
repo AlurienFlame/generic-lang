@@ -2,6 +2,7 @@ from lark import Transformer
 
 class MyTransformer(Transformer):
     # Create a transformer to evaluate the syntax tree
+    symbol_table = {}
 
     # NULLARY NODES
     def start(self, args):
@@ -9,7 +10,7 @@ class MyTransformer(Transformer):
 
     def num(self, args):
         return float(args[0])
-    
+
     def expr(self, args):
         return args[0]
 
@@ -35,4 +36,8 @@ class MyTransformer(Transformer):
 
     def div(self, args):
         return args[0] / args[1]
+
+    def assign(self, args):
+        self.symbol_table[args[0]] = args[1]
+        return args[1]
 

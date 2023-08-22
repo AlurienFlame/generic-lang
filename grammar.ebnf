@@ -9,9 +9,16 @@ term: term "*" factor -> mul
     | factor
 
 factor: NUMBER -> num
-        | "(" expr ")"
-        | "-" factor -> neg
+       | "(" expr ")"
+       | "-" factor -> neg
+       | assign
+
+assign: IDENTIFIER "=" expr -> assign
+
+IDENTIFIER: LETTER (LETTER | DIGIT)*
 
 %import common.NUMBER
+%import common.LETTER
+%import common.DIGIT
 %import common.WS
 %ignore WS

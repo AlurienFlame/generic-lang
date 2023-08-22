@@ -17,6 +17,7 @@ def main():
         syntax_tree = parser.parse(expression)
         print(syntax_tree.pretty())
         result = transformer.transform(syntax_tree)
+        print(transformer.symbol_table)
         print(result)
 
 
