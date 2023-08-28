@@ -28,6 +28,9 @@ class MyTransformer(Transformer):
     def neg(self, args):
         return -args[0]
 
+    def var(self, args):
+        return self.symbol_table[args[0]]
+
     # BINARY NODES
     def add(self, args):
         return args[0] + args[1]

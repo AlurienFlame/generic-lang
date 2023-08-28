@@ -15,6 +15,7 @@ term: term "*" factor -> mul
 factor: NUMBER -> num
        | "(" expr ")"
        | "-" factor -> neg
+       | IDENTIFIER -> var
 
 assign: IDENTIFIER "=" expr -> assign
 
