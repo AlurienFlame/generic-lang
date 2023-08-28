@@ -1,4 +1,8 @@
-start: expr
+start: statement+
+
+statement: expr
+         | assign
+         | comment
 
 expr: expr "+" term -> add
     | expr "-" term -> sub
@@ -11,9 +15,11 @@ term: term "*" factor -> mul
 factor: NUMBER -> num
        | "(" expr ")"
        | "-" factor -> neg
-       | assign
 
 assign: IDENTIFIER "=" expr -> assign
+
+comment: /#[^\n]*/ -> comment
+        | /\/\/[^\n]*/ -> comment
 
 IDENTIFIER: LETTER (LETTER | DIGIT)*
 

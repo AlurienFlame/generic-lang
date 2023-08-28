@@ -1,5 +1,6 @@
 from lark import Transformer
 
+
 class MyTransformer(Transformer):
     # Create a transformer to evaluate the syntax tree
     symbol_table = {}
@@ -19,6 +20,9 @@ class MyTransformer(Transformer):
 
     def factor(self, args):
         return args[0]
+
+    def comment(self, args):
+        return None
 
     # UNARY NODES
     def neg(self, args):
@@ -40,4 +44,3 @@ class MyTransformer(Transformer):
     def assign(self, args):
         self.symbol_table[args[0]] = args[1]
         return args[1]
-

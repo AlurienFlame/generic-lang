@@ -1,0 +1,26 @@
+// Comment
+
+// Variable
+a = 1
+
+// conditional
+if(a == 1) {
+    // code
+} elseif(a == 2) {
+    // code
+} else {
+    // code
+}
+
+// loop
+for (i = 0; i < 10; i++) {
+    // code
+}
+
+// function
+functionName() {
+    // code
+}
+
+// function call
+functionName()
