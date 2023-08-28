@@ -21,15 +21,16 @@ class MyTransformer(Transformer):
     def factor(self, args):
         return args[0]
 
-    def comment(self, args):
-        return None
-
     # UNARY NODES
     def neg(self, args):
         return -args[0]
 
     def var(self, args):
         return self.symbol_table[args[0]]
+
+    def functionDefinition(self, args):
+        self.symbol_table[args[0]] = args[1]
+        return None
 
     # BINARY NODES
     def add(self, args):

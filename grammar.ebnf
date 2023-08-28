@@ -1,8 +1,9 @@
 start: statement+
 
 statement: expr
-         | assign
-         | comment
+    | assign
+    | function_definition
+    | return_statement
 
 expr: expr "+" term -> add
     | expr "-" term -> sub
@@ -13,14 +14,20 @@ term: term "*" factor -> mul
     | factor
 
 factor: NUMBER -> num
-       | "(" expr ")"
-       | "-" factor -> neg
-       | IDENTIFIER -> var
+    | "(" expr ")"
+    | "-" factor -> neg
+    | IDENTIFIER -> var
 
 assign: IDENTIFIER "=" expr -> assign
 
-comment: /#[^\n]*/ -> comment
-        | /\/\/[^\n]*/ -> comment
+COMMENT: /\/\/[^\n]*/
+
+code_block: "{" statement+ "}"
+
+function_definition: IDENTIFIER "()" code_block -> function_definition
+
+RETURN_KEYWORD: "return"
+return_statement: RETURN_KEYWORD expr
 
 IDENTIFIER: LETTER (LETTER | DIGIT)*
 
@@ -29,3 +36,4 @@ IDENTIFIER: LETTER (LETTER | DIGIT)*
 %import common.DIGIT
 %import common.WS
 %ignore WS
+%ignore COMMENT
