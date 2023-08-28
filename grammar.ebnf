@@ -1,9 +1,7 @@
 start: statement+
 
-statement: expr
+statement: expr -> expr
     | assign
-    | function_definition
-    | return_statement
 
 expr: expr "+" term -> add
     | expr "-" term -> sub
@@ -21,13 +19,6 @@ factor: NUMBER -> num
 assign: IDENTIFIER "=" expr -> assign
 
 COMMENT: /\/\/[^\n]*/
-
-code_block: "{" statement+ "}"
-
-function_definition: IDENTIFIER "()" code_block -> function_definition
-
-RETURN_KEYWORD: "return"
-return_statement: RETURN_KEYWORD expr
 
 IDENTIFIER: LETTER (LETTER | DIGIT)*
 

@@ -24,7 +24,6 @@ def main():
 
     # Parse, transform, and run the source code
     syntax_tree = parser.parse(source_code)
-    print(syntax_tree.pretty())
     transformer.transform(syntax_tree)
     print(transformer.symbol_table)
 

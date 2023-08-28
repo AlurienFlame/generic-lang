@@ -26,11 +26,7 @@ class MyTransformer(Transformer):
         return -args[0]
 
     def var(self, args):
-        return self.symbol_table[args[0]]
-
-    def functionDefinition(self, args):
-        self.symbol_table[args[0]] = args[1]
-        return None
+        return self.symbol_table[args[0].value]
 
     # BINARY NODES
     def add(self, args):
@@ -46,5 +42,5 @@ class MyTransformer(Transformer):
         return args[0] / args[1]
 
     def assign(self, args):
-        self.symbol_table[args[0]] = args[1]
+        self.symbol_table[args[0].value] = args[1]
         return args[1]
