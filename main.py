@@ -22,8 +22,9 @@ def main():
     with open(args.source_file) as f:
         source_code = f.read()
 
-    # Parse, transform, and run the source code
+    # Parse and transform the source code
     syntax_tree = parser.parse(source_code)
+    print(syntax_tree.pretty())
     transformer.transform(syntax_tree)
     print(transformer.symbol_table)
 

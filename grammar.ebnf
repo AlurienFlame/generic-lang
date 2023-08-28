@@ -2,6 +2,7 @@ start: statement+
 
 statement: expr -> expr
     | assign
+    | conditional
 
 expr: expr "+" term -> add
     | expr "-" term -> sub
@@ -29,10 +30,21 @@ factor: NUMBER -> num
 
 assign: IDENTIFIER "=" expr -> assign
 
+
 COMMENT: /\/\/[^\n]*/
 
 KEYWORD_TRUE: "true"
 KEYWORD_FALSE: "false"
+
+block: "{" statement* "}"
+
+conditional: if elseif* else?
+
+if: "if" "(" expr ")" block  
+
+elseif: "elseif" "(" expr ")" block
+
+else: "else" block
 
 IDENTIFIER: LETTER (LETTER | DIGIT)*
 
