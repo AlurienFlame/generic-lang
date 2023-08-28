@@ -5,7 +5,18 @@ statement: expr -> expr
 
 expr: expr "+" term -> add
     | expr "-" term -> sub
+    | expr "==" expr -> eq
+    | expr "!=" expr -> neq
+    | expr "<" expr -> lt
+    | expr ">" expr -> gt
+    | expr "<=" expr -> leq
+    | expr ">=" expr -> geq
+    | expr "&&" expr -> land
+    | expr "||" expr -> lor
+    | "!" expr -> lnot
     | term
+    | KEYWORD_TRUE -> true
+    | KEYWORD_FALSE -> false
 
 term: term "*" factor -> mul
     | term "/" factor -> div
@@ -19,6 +30,9 @@ factor: NUMBER -> num
 assign: IDENTIFIER "=" expr -> assign
 
 COMMENT: /\/\/[^\n]*/
+
+KEYWORD_TRUE: "true"
+KEYWORD_FALSE: "false"
 
 IDENTIFIER: LETTER (LETTER | DIGIT)*
 
