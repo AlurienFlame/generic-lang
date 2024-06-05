@@ -7,6 +7,8 @@ statement: expr -> expr
     | conditional
     | while_loop
     | increment
+    | call
+    | "logsymtab" -> logsymtab
 
 expr: expr "+" term -> add
     | expr "-" term -> sub
@@ -19,6 +21,7 @@ expr: expr "+" term -> add
     | expr "&&" expr -> land
     | expr "||" expr -> lor
     | "!" expr -> lnot
+    | "(" IDENTIFIER ("," IDENTIFIER)* ")" "=>" block -> lam
     | ESCAPED_STRING -> string
     | term
     | KEYWORD_TRUE -> true
@@ -31,7 +34,9 @@ term: term "*" factor -> mul
 factor: NUMBER -> num
     | "(" expr ")"
     | "-" factor -> neg
-    | IDENTIFIER -> var
+    | var
+
+var : IDENTIFIER
 
 assign: IDENTIFIER "=" expr -> assign
 
@@ -52,7 +57,9 @@ else: "else" block
 
 while_loop: "while" "(" expr ")" block
 
-increment: IDENTIFIER "++"
+increment: var "++"
+
+call: expr "(" expr ("," expr)* ")"
 
 IDENTIFIER: LETTER (LETTER | DIGIT)*
 

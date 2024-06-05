@@ -1,20 +1,10 @@
-a = 0
-while (a < 10) {
-    a++
+func = (a, b) => {
+    c = a + b
+    nested = (b, c) => {
+        e = b + c
+        logsymtab
+    }
+    nested(b, c)
 }
 
-if (a == 10) {
-    b = 3
-} else {
-    b = 2
-}
-
-c = "Hello World!"
-
-if (c == "Hello World!") {
-    d = 5
-} else {
-    d = 6
-}
-
-e = f
+func(1, 2)
