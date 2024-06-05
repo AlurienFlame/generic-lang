@@ -26,7 +26,7 @@ def main():
     syntax_tree = parser.parse(source_code)
     # print(syntax_tree.pretty())
     interpreter.transform(syntax_tree)
-    print(interpreter.symbol_table)
+    print(f"Symbol table: {interpreter.symbol_table}")
 
 
 if __name__ == "__main__":

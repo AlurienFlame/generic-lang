@@ -13,8 +13,8 @@ if(a == 1) {
 }
 
 // loop
-for (i = 0; i < 10; i++) {
-    // code
+while (a < 10) {
+    a++
 }
 
 // function

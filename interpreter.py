@@ -5,6 +5,8 @@ def log(st):
     if True: # Logging enabled
         print(st)
 
+class GlaException(Exception):
+    pass
 
 class GlaInterpreter(Interpreter):
     # Create a transformer to evaluate the syntax tree
@@ -33,6 +35,15 @@ class GlaInterpreter(Interpreter):
             return True
         return False
 
+    def while_loop(self, args):
+        while self.visit(args.children[0]):
+            self.visit(args.children[1])
+
+    def increment(self, args):
+        token = args.children[0].value
+        self.symbol_table[token] += 1
+        log(f"{token} = {self.symbol_table[token]}")
+
     # NULLARY NODES
     def start(self, args):
         return self.visit(args.children[0])
@@ -54,7 +65,9 @@ class GlaInterpreter(Interpreter):
         return -self.visit(args.children[0])
 
     def var(self, args):
-        return self.symbol_table[self.visit(args.children[0]).value]
+        if args.children[0].value not in self.symbol_table:
+            raise GlaException(f"Variable {args.children[0].value} not defined")
+        return self.symbol_table[args.children[0].value]
 
     # BINARY NODES
     def add(self, args):

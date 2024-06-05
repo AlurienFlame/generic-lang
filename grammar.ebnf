@@ -3,6 +3,8 @@ start: statement+
 statement: expr -> expr
     | assign
     | conditional
+    | while_loop
+    | increment
 
 expr: expr "+" term -> add
     | expr "-" term -> sub
@@ -30,7 +32,6 @@ factor: NUMBER -> num
 
 assign: IDENTIFIER "=" expr -> assign
 
-
 COMMENT: /\/\/[^\n]*/
 
 KEYWORD_TRUE: "true"
@@ -45,6 +46,10 @@ pred: "if" "(" expr ")" block
 elseif: "elseif" "(" expr ")" block
 
 else: "else" block
+
+while_loop: "while" "(" expr ")" block
+
+increment: IDENTIFIER "++"
 
 IDENTIFIER: LETTER (LETTER | DIGIT)*
 
