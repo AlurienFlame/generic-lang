@@ -17,6 +17,7 @@ expr: expr "+" term -> add
     | expr "&&" expr -> land
     | expr "||" expr -> lor
     | "!" expr -> lnot
+    | ESCAPED_STRING -> string
     | term
     | KEYWORD_TRUE -> true
     | KEYWORD_FALSE -> false
@@ -57,5 +58,6 @@ IDENTIFIER: LETTER (LETTER | DIGIT)*
 %import common.LETTER
 %import common.DIGIT
 %import common.WS
+%import common.ESCAPED_STRING
 %ignore WS
 %ignore COMMENT

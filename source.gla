@@ -8,3 +8,11 @@ if (a == 10) {
 } else {
     b = 2
 }
+
+c = "Hello World!"
+
+if (c == "Hello World!") {
+    d = 5
+} else {
+    d = 6
+}

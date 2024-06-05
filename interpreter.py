@@ -69,6 +69,9 @@ class GlaInterpreter(Interpreter):
             raise GlaException(f"Variable {args.children[0].value} not defined")
         return self.symbol_table[args.children[0].value]
 
+    def string(self, args):
+        return args.children[0]
+
     # BINARY NODES
     def add(self, args):
         return self.visit(args.children[0]) + self.visit(args.children[1])
