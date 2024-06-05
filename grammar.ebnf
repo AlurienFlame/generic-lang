@@ -9,8 +9,10 @@ statement: expr -> expr
     | increment
     | call
     | "logsymtab" -> logsymtab
+    | "log""(" expr ")" -> log
 
-expr: expr "+" term -> add
+expr: expr "%" term -> mod
+    | expr "+" term -> add
     | expr "-" term -> sub
     | expr "==" expr -> eq
     | expr "!=" expr -> neq
@@ -47,19 +49,13 @@ KEYWORD_FALSE: "false"
 
 block: "{" statement* "}"
 
-conditional: pred elseif* else?
-
-pred: "if" "(" expr ")" block  
-
-elseif: "elseif" "(" expr ")" block
-
-else: "else" block
+conditional: "if" "(" expr ")" block ("elseif" "(" expr ")" block)* ("else" block)?
 
 while_loop: "while" "(" expr ")" block
 
-increment: var "++"
+increment: IDENTIFIER "++"
 
-call: expr "(" expr ("," expr)* ")"
+call: expr "(" expr? ("," expr)* ")"
 
 IDENTIFIER: LETTER (LETTER | DIGIT)*
 

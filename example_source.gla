@@ -1,3 +1,5 @@
+log("Hello World!")
+
 // Comment
 
 // Variable
@@ -5,11 +7,11 @@ a = 1
 
 // conditional
 if(a == 1) {
-    // code
+    log("a is 1")
 } elseif(a == 2) {
-    // code
+    log("a is 2")
 } else {
-    // code
+    log("a is not 1 or 2")
 }
 
 // loop
@@ -32,5 +34,5 @@ c = 1
 d = (a && b) || c
 e = a && (b || c)
 
-// Strings and escaping
+// escaping
 c = "Hello \" World!"

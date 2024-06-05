@@ -30,7 +30,7 @@ class SymbolTable:
         return undefined
     def __setitem__(self, key, value):
         self.scopes[-1][key] = value
-        print(f"{key} = {value}")
+        # print(f"{key} = {value}")
     def __repr__(self):
         result = ""
         for i in range(len(self.scopes)):
@@ -53,14 +53,14 @@ class GlaInterpreter(Interpreter):
     # Statements
     def conditional(self, args: Tree):
         # if
-        if args.children[0]:
-            self.visit(args.children[0])
+        if self.visit(args.children[0]):
+            self.visit(args.children[1])
             return
 
         # else if
-        for i in range(len(args.children[1:-1])):
-            if args.children[i]:
-                self.visit(args.children[i])
+        for i in range(2, len(args.children) - 2, 2):
+            if self.visit(args.children[i]):
+                self.visit(args.children[i+1])
                 return
 
         # else
@@ -80,10 +80,11 @@ class GlaInterpreter(Interpreter):
     def increment(self, args):
         token = args.children[0].value
         self.symbol_table[token] += 1
-        # print(f"{token} = {self.symbol_table[token]}")
+        # print(f"{token}++")
 
     def call(self, args):
         # e1 = id, e2..n = arguments
+        # print(f"Calling {args.children[0]}")
         lam = self.visit(args.children[0])
         if isinstance(lam, Undefined):
             raise GlaException(f"Tried to call undefined function")
@@ -96,13 +97,15 @@ class GlaInterpreter(Interpreter):
     # Expressions
     def lam(self, args):
         # e1..n-1 = parameters, en = body
-        return Lambda(args.children[:-1], args.children[-1])
+        lam = Lambda(args.children[:-1], args.children[-1])
+        # print(f"Defining lambda {lam}")
+        return lam
 
     def assign(self, args):
         identifier = args.children[0].value
         value = self.visit(args.children[1])
         self.symbol_table[identifier] = value
-        print(f"{identifier} = {value}")
+        # print(f"{identifier} = {value}")
 
     # NULLARY NODES
     def start(self, args):
@@ -125,11 +128,14 @@ class GlaInterpreter(Interpreter):
         return -self.visit(args.children[0])
 
     def var(self, args):
-        print(f"Looking up {args.children[0]}")
+        # print(f"Looking up {args.children[0]}")
         return self.symbol_table[args.children[0].value]
 
     def string(self, args):
-        return args.children[0]
+        return str(args.children[0])
+
+    def log(self, args):
+        print(self.visit(args.children[0]))
 
     # BINARY NODES
     def add(self, args):
@@ -143,6 +149,9 @@ class GlaInterpreter(Interpreter):
 
     def div(self, args):
         return self.visit(args.children[0]) / self.visit(args.children[1])
+
+    def mod(self, args):
+        return self.visit(args.children[0]) % self.visit(args.children[1])
 
     # Boolean operators
     def eq(self, args):

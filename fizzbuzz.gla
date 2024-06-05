@@ -1,0 +1,17 @@
+fizzbuzz = (n) => {
+    i = 1
+    while (i <= n) {
+        if (i % 3 == 0 && i % 5 == 0) {
+            log("FizzBuzz")
+        } elseif (i % 3 == 0) {
+            log("Fizz")
+        } elseif (i % 5 == 0) {
+            log("Buzz")
+        } else {
+            log(i)
+        }
+        i++
+    }
+}
+
+fizzbuzz(15)

@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 
 def main():
     # Create parser and interpreter
-    parser = Lark.open("grammar.ebnf", start="start")
+    parser = Lark.open("grammar.ebnf", start="start", parser="lalr")
     interpreter = GlaInterpreter()
 
     # Load source code from file
