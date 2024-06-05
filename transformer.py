@@ -1,9 +1,25 @@
 from lark import Transformer
 
 
-class MyTransformer(Transformer):
+class MyTransformer(Transformer): # TODO: Inherit fron Interpreter instead to evaluate top-down
     # Create a transformer to evaluate the syntax tree
     symbol_table = {}
+
+    # Statements
+    def conditional(self, args):
+        # e1 = pred, e2...n-1 = else ifs, e_n = else
+        if not args[0]:
+            for i in range(1, len(args) - 1, 2):
+                args[i]
+            return args[-1]
+        pass
+
+    def pred(self, args):
+        # e1 = pred, e2 = body
+        if args[0]:
+            args[1]
+            return True
+        return False
 
     # NULLARY NODES
     def start(self, args):
@@ -42,6 +58,7 @@ class MyTransformer(Transformer):
         return args[0] / args[1]
 
     def assign(self, args):
+        print(f"Assigning {args[1]} to {args[0].value}")
         self.symbol_table[args[0].value] = args[1]
         return args[1]
 

@@ -38,9 +38,9 @@ KEYWORD_FALSE: "false"
 
 block: "{" statement* "}"
 
-conditional: if elseif* else?
+conditional: pred elseif* else?
 
-if: "if" "(" expr ")" block  
+pred: "if" "(" expr ")" block  
 
 elseif: "elseif" "(" expr ")" block
 

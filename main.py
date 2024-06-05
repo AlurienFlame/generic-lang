@@ -24,9 +24,9 @@ def main():
 
     # Parse and transform the source code
     syntax_tree = parser.parse(source_code)
-    print(syntax_tree.pretty())
+    # print(syntax_tree.pretty())
     transformer.transform(syntax_tree)
-    print(transformer.symbol_table)
+    # print(transformer.symbol_table)
 
 
 if __name__ == "__main__":
