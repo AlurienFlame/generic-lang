@@ -11,9 +11,7 @@ statement: expr -> expr
     | "log""(" expr ")" -> log
     | "return" expr -> return_stmt
 
-expr: call
-    | expr "%" term -> mod
-    | expr "+" term -> add
+expr: expr "+" term -> add
     | expr "-" term -> sub
     | expr "==" expr -> eq
     | expr "!=" expr -> neq
@@ -34,12 +32,14 @@ expr: call
 
 term: term "*" factor -> mul
     | term "/" factor -> div
+    | term "%" factor -> mod
     | factor
 
 factor: NUMBER -> num
     | "(" expr ")"
     | "-" factor -> neg
     | var
+    | call
 
 var : IDENTIFIER
 
@@ -58,9 +58,9 @@ while_loop: "while" "(" expr ")" block
 
 increment: IDENTIFIER "++"
 
-call: expr "()"
-    |  expr "(" expr ")"
-    |  expr "(" expr ("," expr)+ ")"
+call: IDENTIFIER "()"
+    |  IDENTIFIER "(" expr ")"
+    |  IDENTIFIER "(" expr ("," expr)+ ")"
 
 IDENTIFIER: LETTER (LETTER | DIGIT)*
 

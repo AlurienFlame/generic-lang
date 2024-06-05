@@ -68,14 +68,10 @@ class GlaInterpreter(Interpreter):
                 return
 
         # else
-        self.visit(args.children[-1])
-
-    def pred(self, args):
-        # e1 = pred, e2 = body
-        if self.visit(args.children[0]):
-            self.visit(args.children[1])
-            return True
-        return False
+        if len(args.children) > 1:
+            # FIXME: doesn't work in all cases
+            # want to rework if-else anyway
+            self.visit(args.children[-1])
 
     def while_loop(self, args):
         while self.visit(args.children[0]):
@@ -89,7 +85,7 @@ class GlaInterpreter(Interpreter):
     def call(self, args):
         # e1 = id, e2..n = arguments
         # print(f"Calling {args.children[0]}")
-        lam = self.visit(args.children[0])
+        lam = self.symbol_table[args.children[0].value]
         if isinstance(lam, Undefined):
             raise GlaException(f"Tried to call undefined function")
 
