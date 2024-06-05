@@ -16,3 +16,5 @@ if (c == "Hello World!") {
 } else {
     d = 6
 }
+
+e = f

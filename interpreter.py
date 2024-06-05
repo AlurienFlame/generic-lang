@@ -1,16 +1,42 @@
 from lark import Tree
 from lark.visitors import Interpreter
 
-def log(st):
-    if True: # Logging enabled
-        print(st)
-
 class GlaException(Exception):
     pass
 
+class Undefined:
+    def __repr__(self):
+        return "Undefined"
+undefined = Undefined()
+
+class SymbolTable:
+    scopes = []
+    def enter_scope(self):
+        self.scopes.append({})
+    def exit_scope(self):
+        self.scopes.pop()
+    def __getitem__(self, key):
+        for scope in reversed(self.scopes):
+            if key in scope:
+                return scope[key]
+        return undefined
+    def __setitem__(self, key, value):
+        self.scopes[-1][key] = value
+    def __repr__(self):
+        result = ""
+        for i in range(len(self.scopes)):
+            result += f"Scope {i}: {self.scopes[i]}\n"
+        return result
+
 class GlaInterpreter(Interpreter):
     # Create a transformer to evaluate the syntax tree
-    symbol_table = {}
+    symbol_table = SymbolTable()
+
+    def program(self, args):
+        self.symbol_table.enter_scope()
+        for statement in args.children:
+            self.visit(statement)
+        self.symbol_table.exit_scope()
 
     # Statements
     def conditional(self, args: Tree):
@@ -42,7 +68,7 @@ class GlaInterpreter(Interpreter):
     def increment(self, args):
         token = args.children[0].value
         self.symbol_table[token] += 1
-        log(f"{token} = {self.symbol_table[token]}")
+        # print(f"{token} = {self.symbol_table[token]}")
 
     # NULLARY NODES
     def start(self, args):
@@ -65,8 +91,6 @@ class GlaInterpreter(Interpreter):
         return -self.visit(args.children[0])
 
     def var(self, args):
-        if args.children[0].value not in self.symbol_table:
-            raise GlaException(f"Variable {args.children[0].value} not defined")
         return self.symbol_table[args.children[0].value]
 
     def string(self, args):
@@ -89,7 +113,7 @@ class GlaInterpreter(Interpreter):
         token = args.children[0].value
         value = self.visit(args.children[1])
         self.symbol_table[token] = value
-        log(f"{token} = {value}")
+        # print(f"{token} = {value}")
         return self.visit(args.children[1])
 
     # Boolean operators

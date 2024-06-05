@@ -1,4 +1,6 @@
-start: statement+
+start: program
+
+program: statement+
 
 statement: expr -> expr
     | assign

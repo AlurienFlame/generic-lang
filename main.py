@@ -27,7 +27,6 @@ def main():
 
     # Interpretation step
     interpreter.transform(syntax_tree)
-    print(f"Symbol table: {interpreter.symbol_table}")
 
 
 if __name__ == "__main__":
