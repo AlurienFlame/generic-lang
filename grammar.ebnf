@@ -7,11 +7,12 @@ statement: expr -> expr
     | conditional
     | while_loop
     | increment
-    | call
     | "logsymtab" -> logsymtab
     | "log""(" expr ")" -> log
+    | "return" expr -> return_stmt
 
-expr: expr "%" term -> mod
+expr: call
+    | expr "%" term -> mod
     | expr "+" term -> add
     | expr "-" term -> sub
     | expr "==" expr -> eq
@@ -23,7 +24,9 @@ expr: expr "%" term -> mod
     | expr "&&" expr -> land
     | expr "||" expr -> lor
     | "!" expr -> lnot
-    | "(" IDENTIFIER ("," IDENTIFIER)* ")" "=>" block -> lam
+    | "()" "=>" block -> lam
+    | "(" IDENTIFIER ")" "=>" block -> lam
+    | "(" IDENTIFIER ("," IDENTIFIER)+ ")" "=>" block -> lam
     | ESCAPED_STRING -> string
     | term
     | KEYWORD_TRUE -> true
@@ -55,7 +58,9 @@ while_loop: "while" "(" expr ")" block
 
 increment: IDENTIFIER "++"
 
-call: expr "(" expr? ("," expr)* ")"
+call: expr "()"
+    |  expr "(" expr ")"
+    |  expr "(" expr ("," expr)+ ")"
 
 IDENTIFIER: LETTER (LETTER | DIGIT)*
 

@@ -4,6 +4,10 @@ from lark.visitors import Interpreter
 class GlaException(Exception):
     pass
 
+class ReturnException(Exception):
+    def __init__(self, value):
+        self.value = value
+
 class Undefined:
     def __repr__(self):
         return "Undefined"
@@ -88,11 +92,23 @@ class GlaInterpreter(Interpreter):
         lam = self.visit(args.children[0])
         if isinstance(lam, Undefined):
             raise GlaException(f"Tried to call undefined function")
+
         self.symbol_table.enter_scope()
+
         for i in range(len(lam.parameters)):
             self.symbol_table[lam.parameters[i].value] = self.visit(args.children[i + 1])
-        self.visit(lam.body)
+        try:
+            self.visit(lam.body)
+        except ReturnException as e:
+            # print(f"Returning from {args.children[0]}")
+            self.symbol_table.exit_scope()
+            return e.value
         self.symbol_table.exit_scope()
+
+    def return_stmt(self, args):
+        # e1 = value
+        # print(f"Returning {args.children[0]}")
+        raise ReturnException(self.visit(args.children[0]))
 
     # Expressions
     def lam(self, args):
