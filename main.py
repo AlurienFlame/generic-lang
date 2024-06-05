@@ -1,5 +1,5 @@
 from lark import Lark
-from transformer import MyTransformer
+from interpreter import GlaInterpreter
 from argparse import ArgumentParser
 
 
@@ -9,9 +9,9 @@ def main():
     with open("grammar.ebnf") as f:
         grammar = f.read()
 
-    # Create parser and transformer
+    # Create parser and interpreter
     parser = Lark(grammar, start="start", parser="lalr")
-    transformer = MyTransformer()
+    interpreter = GlaInterpreter()
 
     # Load source code from file
     arg_parser = ArgumentParser()
@@ -25,8 +25,8 @@ def main():
     # Parse and transform the source code
     syntax_tree = parser.parse(source_code)
     # print(syntax_tree.pretty())
-    transformer.transform(syntax_tree)
-    # print(transformer.symbol_table)
+    interpreter.transform(syntax_tree)
+    print(interpreter.symbol_table)
 
 
 if __name__ == "__main__":

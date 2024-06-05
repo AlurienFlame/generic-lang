@@ -2,5 +2,5 @@ if (1) {
     result = 1
     b = 2
 } else {
-    shouldntbeset = 1
+    shouldntbeset = 3
 }
