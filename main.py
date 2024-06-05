@@ -4,13 +4,8 @@ from argparse import ArgumentParser
 
 
 def main():
-    # Load grammar from file
-    grammar = None
-    with open("grammar.ebnf") as f:
-        grammar = f.read()
-
     # Create parser and interpreter
-    parser = Lark(grammar, start="start", parser="lalr")
+    parser = Lark.open("grammar.ebnf", start="start", parser="lalr")
     interpreter = GlaInterpreter()
 
     # Load source code from file
@@ -22,9 +17,15 @@ def main():
     with open(args.source_file) as f:
         source_code = f.read()
 
-    # Parse and transform the source code
+    # Lexing step (optional)
+    # tokens = parser.lex(source_code)
+    # print(list(tokens))
+
+    # Parsing step
     syntax_tree = parser.parse(source_code)
     # print(syntax_tree.pretty())
+
+    # Interpretation step
     interpreter.transform(syntax_tree)
     print(f"Symbol table: {interpreter.symbol_table}")
 
